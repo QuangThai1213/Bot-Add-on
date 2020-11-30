@@ -9,8 +9,10 @@
   "author": "me",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "google-spreadsheet": "^3.0.14",
+    "googleapis": "^39.2.0",
     "json2xls": "^0.1.2",
     "nodemon": "^2.0.6",
     "read-excel-file": "^4.1.0",

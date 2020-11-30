@@ -45,11 +45,82 @@ async function getData() {
     });
     await doc.loadInfo(); // loads document properties and worksheets
     console.log(doc.title);
+    console.log(doc.sheetsByIndex[0])
     const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    let data = await sheet.getRows()
     await sheet.loadHeaderRow()
-    console.log(sheet.title);
-    console.log(sheet.resize);
-
 }
 
-getData();
+
+const { google } = require('googleapis');
+const sheets = google.sheets('v4');
+const axios = require('axios').default;
+async function sortRows() {
+    const authClient = await authorize();
+    axios({
+        method: 'post',
+        url: 'https://sheets.googleapis.com/v4/spreadsheets/1RBHdyI-yAgvksAlKyQj-RKRACon1DoFVPeXN0Fz_lys:batchUpdate',
+        data: {
+            "requests": [
+                {
+                    "sortRange": {
+                        "range": {
+                            "sheetId": 1742649376,
+                            "startRowIndex": 1
+                        },
+                        "sortSpecs": [
+                            {
+                                "sortOrder": "ASCENDING",
+                                "dimensionIndex": 5
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        auth: authClient,
+    });
+}
+
+async function authorize() {
+    // TODO: Change placeholder below to generate authentication credentials. See
+    // https://developers.google.com/sheets/quickstart/nodejs#step_3_set_up_the_sample
+    //
+    // Authorize using one of the following scopes:
+    //   'https://www.googleapis.com/auth/drive'
+    //   'https://www.googleapis.com/auth/drive.file'
+    //   'https://www.googleapis.com/auth/spreadsheets'
+    let authClient = null;
+
+    if (authClient == null) {
+        throw Error('authentication failed');
+    }
+
+    return authClient;
+}
+
+// getData();
+sortRows();
+
+
+
+
+
+// {
+//     "requests": [
+//       {
+//         "sortRange": {
+//           "range": {
+//             "sheetId": 1742649376,
+//             "startRowIndex": 1
+//           },
+//           "sortSpecs": [
+//             {
+//               "sortOrder": "ASCENDING",
+//               "dimensionIndex": 5
+//             }
+//           ]
+//         }
+//       }
+//     ]
+//   }
